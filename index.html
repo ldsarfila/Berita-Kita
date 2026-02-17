@@ -4,9 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="BeritaKita - Portal berita terpercaya Indonesia">
+    <meta name="keywords" content="berita indonesia, berita nasional, ekonomi, teknologi, olahraga, hiburan, portal berita">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://beritakita.com/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BeritaKita">
+    <meta property="og:title" content="BeritaKita - Portal Berita Indonesia Terpercaya">
+    <meta property="og:description" content="Berita terkini nasional, ekonomi, teknologi, olahraga, hiburan, dan gaya hidup dalam satu portal.">
+    <meta property="og:url" content="https://beritakita.com/">
+    <meta property="og:image" content="https://placehold.co/1200x630/0066cc/ffffff?text=BeritaKita">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BeritaKita - Portal Berita Indonesia Terpercaya">
+    <meta name="twitter:description" content="Berita terkini nasional, ekonomi, teknologi, olahraga, hiburan, dan gaya hidup.">
+    <meta name="twitter:image" content="https://placehold.co/1200x630/0066cc/ffffff?text=BeritaKita">
     <title>BeritaKita - Portal Berita Indonesia Terpercaya</title>
     <link rel="stylesheet" href="public/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "NewsMediaOrganization",
+            "name": "BeritaKita",
+            "url": "https://beritakita.com/",
+            "logo": "https://placehold.co/512x512/0066cc/ffffff?text=BK",
+            "sameAs": [
+                "https://twitter.com/BeritaKita"
+            ]
+        }
+    </script>
+    <script>
+        window.BERITAKITA_GA_MEASUREMENT_ID = '';
+    </script>
 </head>
 <body>
     <!-- Breaking News Ticker -->
@@ -14,7 +44,7 @@
         <div class="container">
             <span class="breaking-label">Breaking News</span>
             <div class="breaking-news-content">
-                <marquee behavior="scroll" direction="left" scrollamount="5">
+                <div class="ticker-track">
                     <span>Presiden Resmikan Proyek Infrastruktur Baru</span>
                     <span class="separator">•</span>
                     <span>Rupiah Menguat Terhadap Dollar AS</span>
@@ -22,7 +52,15 @@
                     <span>Indonesia Raih Emas di SEA Games 2025</span>
                     <span class="separator">•</span>
                     <span>Harga Minyak Dunia Naik 5%</span>
-                </marquee>
+                    <span class="separator">•</span>
+                    <span>Presiden Resmikan Proyek Infrastruktur Baru</span>
+                    <span class="separator">•</span>
+                    <span>Rupiah Menguat Terhadap Dollar AS</span>
+                    <span class="separator">•</span>
+                    <span>Indonesia Raih Emas di SEA Games 2025</span>
+                    <span class="separator">•</span>
+                    <span>Harga Minyak Dunia Naik 5%</span>
+                </div>
             </div>
         </div>
     </div>
@@ -35,10 +73,10 @@
                     <h1><a href="index.html">Berita<span>Kita</span></a></h1>
                 </div>
                 <div class="header-right">
-                    <div class="search-box">
-                        <input type="text" placeholder="Cari berita...">
-                        <button><i class="fas fa-search"></i></button>
-                    </div>
+                    <form class="search-box" role="search">
+                        <input type="text" placeholder="Cari berita..." aria-label="Cari berita">
+                        <button type="submit" aria-label="Cari"><i class="fas fa-search"></i></button>
+                    </form>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -91,6 +129,13 @@
                                 <p class="hero-excerpt">
                                     Presiden mengumumkan program kesejahteraan baru yang diharapkan dapat meningkatkan taraf hidup masyarakat Indonesia di seluruh nusantara...
                                 </p>
+                                <div class="share-actions" data-share-title="Pemerintah Luncurkan Program Baru untuk Kesejahteraan Rakyat Indonesia" data-share-url="https://beritakita.com/">
+                                    <span>Bagikan:</span>
+                                    <button type="button" class="share-btn" data-share-platform="facebook" aria-label="Bagikan ke Facebook"><i class="fab fa-facebook-f"></i></button>
+                                    <button type="button" class="share-btn" data-share-platform="x" aria-label="Bagikan ke X"><i class="fab fa-x-twitter"></i></button>
+                                    <button type="button" class="share-btn" data-share-platform="whatsapp" aria-label="Bagikan ke WhatsApp"><i class="fab fa-whatsapp"></i></button>
+                                    <button type="button" class="share-btn" data-share-platform="copy" aria-label="Salin tautan"><i class="fas fa-link"></i></button>
+                                </div>
                             </div>
                         </div>
                         <div class="hero-side">
@@ -258,6 +303,22 @@
                                 </div>
                             </article>
                         </div>
+                    </section>
+
+                    <section class="news-section comments-section" data-article-slug="selamat-datang-di-beritakita">
+                        <div class="section-header">
+                            <h2>Komentar Pembaca</h2>
+                        </div>
+                        <form id="commentForm" class="comment-form">
+                            <div class="comment-form-row">
+                                <input type="text" id="commentName" name="name" placeholder="Nama Anda" required>
+                                <input type="email" id="commentEmail" name="email" placeholder="Email (opsional)">
+                            </div>
+                            <textarea id="commentContent" name="content" rows="4" placeholder="Tulis komentar Anda..." required></textarea>
+                            <button type="submit" class="btn-comment">Kirim Komentar</button>
+                        </form>
+                        <div id="commentStatus" class="comment-status" aria-live="polite"></div>
+                        <div id="commentList" class="comment-list"></div>
                     </section>
                 </div>
 

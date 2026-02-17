@@ -1,9 +1,256 @@
 // Mobile Menu Toggle
 document.addEventListener('DOMContentLoaded', function() {
+    const API_BASE_URL = window.BERITAKITA_API_BASE_URL || 'http://localhost:3000/api/v1';
+    const GA_MEASUREMENT_ID = String(window.BERITAKITA_GA_MEASUREMENT_ID || '').trim();
     const menuToggle = document.querySelector('.menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
+    const searchableSelectors = '.hero-main, .hero-card, .news-card, .list-news-card, .popular-news-item';
+
+    function getToastContainer() {
+        let container = document.getElementById('site-toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'site-toast-container';
+            container.className = 'site-toast-container';
+            document.body.appendChild(container);
+        }
+        return container;
+    }
+
+    function showToast(message, type = 'info', durationMs = 2600) {
+        const container = getToastContainer();
+        const toast = document.createElement('div');
+        toast.className = `site-toast ${type}`;
+        toast.textContent = String(message || '');
+
+        container.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.classList.add('show');
+        });
+
+        const hide = () => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                if (toast.parentElement === container) {
+                    container.removeChild(toast);
+                }
+            }, 220);
+        };
+
+        const timeoutId = setTimeout(hide, durationMs);
+        toast.addEventListener('click', () => {
+            clearTimeout(timeoutId);
+            hide();
+        });
+    }
+
+    function initializeAnalytics() {
+        if (!GA_MEASUREMENT_ID) {
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_MEASUREMENT_ID)}`;
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            window.dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', GA_MEASUREMENT_ID, {
+            page_title: document.title,
+            page_location: window.location.href
+        });
+    }
+
+    function showShareStatus(message) {
+        showToast(message, 'info');
+    }
+
+    function initializeSocialSharing() {
+        const shareContainers = document.querySelectorAll('.share-actions');
+        if (!shareContainers.length) {
+            return;
+        }
+
+        shareContainers.forEach((container) => {
+            container.addEventListener('click', async (event) => {
+                const button = event.target.closest('[data-share-platform]');
+                if (!button) {
+                    return;
+                }
+
+                const platform = button.dataset.sharePlatform;
+                const title = container.dataset.shareTitle || document.title;
+                const shareUrl = container.dataset.shareUrl || window.location.href;
+
+                const encodedTitle = encodeURIComponent(title);
+                const encodedUrl = encodeURIComponent(shareUrl);
+                const text = encodeURIComponent(`${title} - ${shareUrl}`);
+
+                const shareLinks = {
+                    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+                    x: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+                    whatsapp: `https://wa.me/?text=${text}`
+                };
+
+                if (platform === 'copy') {
+                    try {
+                        await navigator.clipboard.writeText(shareUrl);
+                        showShareStatus('Link berhasil disalin');
+                    } catch (error) {
+                        showShareStatus('Gagal menyalin link');
+                    }
+                    return;
+                }
+
+                if (shareLinks[platform]) {
+                    window.open(shareLinks[platform], '_blank', 'noopener,noreferrer,width=640,height=640');
+                }
+            });
+        });
+    }
+
+    function formatCommentDate(value) {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) {
+            return '-';
+        }
+
+        return date.toLocaleString('id-ID', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function renderComments(listElement, comments) {
+        if (!comments.length) {
+            listElement.innerHTML = '<p>Belum ada komentar. Jadilah yang pertama!</p>';
+            return;
+        }
+
+        listElement.innerHTML = comments.map((comment) => {
+            const safeAuthor = escapeHtml(comment.author_name);
+            const safeContent = escapeHtml(comment.content);
+
+            return `
+                <article class="comment-item">
+                    <div class="comment-item-header">
+                        <strong>${safeAuthor}</strong>
+                        <span>${formatCommentDate(comment.created_at)}</span>
+                    </div>
+                    <p>${safeContent}</p>
+                </article>
+            `;
+        }).join('');
+    }
+
+    async function initializeComments() {
+        const section = document.querySelector('.comments-section');
+        const form = document.getElementById('commentForm');
+        const listElement = document.getElementById('commentList');
+        const statusElement = document.getElementById('commentStatus');
+
+        if (!section || !form || !listElement || !statusElement) {
+            return;
+        }
+
+        const articleSlug = section.dataset.articleSlug;
+
+        async function loadComments() {
+            try {
+                statusElement.textContent = 'Memuat komentar...';
+
+                const response = await fetch(`${API_BASE_URL}/comments?articleSlug=${encodeURIComponent(articleSlug)}`);
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message || 'Gagal memuat komentar');
+                }
+
+                renderComments(listElement, result.data || []);
+                statusElement.textContent = '';
+            } catch (error) {
+                statusElement.textContent = 'Komentar belum tersedia saat ini.';
+                listElement.innerHTML = '';
+            }
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const name = String(document.getElementById('commentName').value || '').trim();
+            const email = String(document.getElementById('commentEmail').value || '').trim();
+            const content = String(document.getElementById('commentContent').value || '').trim();
+
+            if (!name || !content) {
+                statusElement.textContent = 'Nama dan komentar wajib diisi.';
+                return;
+            }
+
+            try {
+                statusElement.textContent = 'Mengirim komentar...';
+
+                const response = await fetch(`${API_BASE_URL}/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        articleSlug,
+                        authorName: name,
+                        authorEmail: email,
+                        content
+                    })
+                });
+
+                const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result.message || 'Gagal mengirim komentar');
+                }
+
+                showToast(result.message || 'Komentar berhasil dikirim dan menunggu moderasi admin.', 'success');
+                form.reset();
+                await loadComments();
+            } catch (error) {
+                statusElement.textContent = error.message || 'Terjadi kesalahan saat mengirim komentar.';
+                showToast(error.message || 'Terjadi kesalahan saat mengirim komentar.', 'error', 3200);
+            }
+        });
+
+        await loadComments();
+    }
+
+    const images = document.querySelectorAll('img');
+    images.forEach((img, index) => {
+        img.decoding = 'async';
+
+        if (index === 0) {
+            img.loading = 'eager';
+            img.fetchPriority = 'high';
+        } else {
+            img.loading = 'lazy';
+            img.fetchPriority = 'low';
+        }
+    });
     
-    if (menuToggle) {
+    if (menuToggle && navMenu) {
         menuToggle.addEventListener('click', function() {
             navMenu.classList.toggle('active');
             
@@ -21,6 +268,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Close menu when clicking outside
     document.addEventListener('click', function(event) {
+        if (!menuToggle || !navMenu) {
+            return;
+        }
+
         const isClickInsideNav = navMenu.contains(event.target);
         const isClickOnToggle = menuToggle.contains(event.target);
         
@@ -35,22 +286,37 @@ document.addEventListener('DOMContentLoaded', function() {
     // Search functionality
     const searchForm = document.querySelector('.search-box');
     if (searchForm) {
-        const searchButton = searchForm.querySelector('button');
         const searchInput = searchForm.querySelector('input');
-        
-        searchButton.addEventListener('click', function(e) {
+
+        searchForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const query = searchInput.value.trim();
-            if (query) {
-                alert('Searching for: ' + query);
-                // Implement actual search functionality here
-            }
-        });
 
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                searchButton.click();
+            if (!query) {
+                document.querySelectorAll(searchableSelectors).forEach(item => {
+                    item.style.display = '';
+                });
+                return;
+            }
+
+            let firstMatch = null;
+
+            document.querySelectorAll(searchableSelectors).forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const isMatch = text.includes(query.toLowerCase());
+
+                item.style.display = isMatch ? '' : 'none';
+
+                if (isMatch && !firstMatch) {
+                    firstMatch = item;
+                }
+            });
+
+            if (firstMatch) {
+                firstMatch.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
             }
         });
     }
@@ -64,7 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const email = emailInput.value.trim();
             
             if (email) {
-                alert('Terima kasih! Email ' + email + ' telah berlangganan newsletter.');
+                showToast('Terima kasih! Email ' + email + ' telah berlangganan newsletter.', 'success');
                 emailInput.value = '';
                 // Implement actual newsletter subscription here
             }
@@ -117,29 +383,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const backToTop = document.createElement('button');
     backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
     backToTop.className = 'back-to-top';
-    backToTop.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 50px;
-        height: 50px;
-        background: var(--primary-blue);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        display: none;
-        z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s;
-    `;
+    backToTop.type = 'button';
+    backToTop.setAttribute('aria-label', 'Kembali ke atas');
     document.body.appendChild(backToTop);
 
     window.addEventListener('scroll', function() {
         if (window.pageYOffset > 300) {
-            backToTop.style.display = 'block';
+            backToTop.classList.add('visible');
         } else {
-            backToTop.style.display = 'none';
+            backToTop.classList.remove('visible');
         }
     });
 
@@ -148,16 +400,6 @@ document.addEventListener('DOMContentLoaded', function() {
             top: 0,
             behavior: 'smooth'
         });
-    });
-
-    backToTop.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-5px)';
-        this.style.background = 'var(--dark-blue)';
-    });
-
-    backToTop.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0)';
-        this.style.background = 'var(--primary-blue)';
     });
 
     // Add click handlers for news cards
@@ -176,6 +418,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('.header');
     
     window.addEventListener('scroll', function() {
+        if (!header) {
+            return;
+        }
+
         const currentScroll = window.pageYOffset;
         
         if (currentScroll <= 0) {
@@ -195,6 +441,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         lastScroll = currentScroll;
     });
+
+    initializeSocialSharing();
+    initializeComments();
+    initializeAnalytics();
 });
 
 // Page load animation

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderasi Komentar - Admin BeritaKita</title>
+    <link rel="stylesheet" href="../public/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2>Berita<span>Kita</span></h2>
+                <p>Admin Panel</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="articles.html" class="nav-item">
+                    <i class="fas fa-newspaper"></i> Artikel
+                </a>
+                <a href="categories.html" class="nav-item">
+                    <i class="fas fa-tags"></i> Kategori
+                </a>
+                <a href="users.html" class="nav-item">
+                    <i class="fas fa-users"></i> Pengguna
+                </a>
+                <a href="comments.html" class="nav-item active">
+                    <i class="fas fa-comments"></i> Komentar
+                </a>
+                <a href="media.html" class="nav-item">
+                    <i class="fas fa-images"></i> Media
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i> Pengaturan
+                </a>
+                <a href="login.html" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1>Moderasi Komentar</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="search-box">
+                        <input type="text" id="comment-search" placeholder="Cari komentar...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="notification">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">0</span>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://via.placeholder.com/40" alt="Admin">
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2>Daftar Komentar</h2>
+                    </div>
+
+                    <div class="table-filters">
+                        <div class="filter-group">
+                            <label for="comment-status-filter">Filter Status:</label>
+                            <select id="comment-status-filter">
+                                <option value="pending" selected>Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="comment-limit">Jumlah:</label>
+                            <select id="comment-limit">
+                                <option value="10">10</option>
+                                <option value="20" selected>20</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="comments-status" class="moderation-status">Memuat komentar...</div>
+
+                    <div class="table-responsive">
+                        <table class="data-table moderation-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Artikel</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>Komentar</th>
+                                    <th>Status</th>
+                                    <th>Tanggal</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="comments-table-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination moderation-pagination">
+                        <button id="comments-prev" class="page-btn" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span id="comments-page-info" class="page-info">Halaman 1</span>
+                        <button id="comments-next" class="page-btn" disabled>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/js/admin.js"></script>
+    <script src="../public/js/admin-comments.js"></script>
+</body>
+</html>

@@ -79,8 +79,24 @@ img {
     overflow: hidden;
 }
 
+.ticker-track {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    animation: ticker-scroll 26s linear infinite;
+}
+
 .breaking-news-content span.separator {
     margin: 0 10px;
+}
+
+@keyframes ticker-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
 }
 
 /* =================================
@@ -277,6 +293,32 @@ img {
     margin: 0 8px;
 }
 
+.share-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.share-actions span {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.share-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+    cursor: pointer;
+}
+
+.share-btn:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
 .hero-side {
     display: flex;
     flex-direction: column;
@@ -445,6 +487,77 @@ img {
     justify-content: space-between;
     font-size: 12px;
     color: var(--text-light);
+}
+
+.comments-section {
+    margin-top: 0;
+}
+
+.comment-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.comment-form input,
+.comment-form textarea {
+    width: 100%;
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: inherit;
+    margin-bottom: 10px;
+}
+
+.comment-form textarea {
+    resize: vertical;
+}
+
+.btn-comment {
+    border: none;
+    background: var(--primary-blue);
+    color: var(--white);
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-comment:hover {
+    background: var(--dark-blue);
+}
+
+.comment-status {
+    font-size: 14px;
+    margin: 8px 0 12px;
+    color: var(--text-light);
+}
+
+.comment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.comment-item {
+    border: 1px solid #e7e7e7;
+    border-radius: 8px;
+    padding: 12px;
+    background: #fafafa;
+}
+
+.comment-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.comment-item strong {
+    color: var(--text-dark);
 }
 
 /* List News */
@@ -710,10 +823,84 @@ img {
 .footer-bottom p {
     font-size: 14px;
     color: #ccc;
+
+    .comment-form-row {
+        grid-template-columns: 1fr;
+    }
 }
 
 .footer-bottom a {
     color: var(--primary-blue);
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, background 0.3s;
+}
+
+.back-to-top.visible {
+    display: block;
+}
+
+.back-to-top:hover {
+    transform: translateY(-5px);
+    background: var(--dark-blue);
+}
+
+.site-toast-container {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1400;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.site-toast {
+    min-width: 220px;
+    max-width: 360px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--white);
+    font-size: 14px;
+    line-height: 1.4;
+    box-shadow: var(--shadow-hover);
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.site-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.site-toast.success {
+    background: var(--primary-blue);
+}
+
+.site-toast.error {
+    background: var(--red-accent);
+}
+
+.site-toast.info {
+    background: var(--text-dark);
 }
 
 /* =================================
@@ -841,6 +1028,10 @@ img {
         text-align: center;
         margin-bottom: 5px;
     }
+
+    .ticker-track {
+        animation-duration: 20s;
+    }
 }
 
 @media (max-width: 480px) {
@@ -865,5 +1056,29 @@ img {
 
     .hero-content {
         padding: 15px;
+    }
+
+    .back-to-top {
+        width: 44px;
+        height: 44px;
+        right: 20px;
+        bottom: 20px;
+    }
+
+    .site-toast-container {
+        top: 12px;
+        right: 12px;
+        left: 12px;
+    }
+
+    .site-toast {
+        min-width: 0;
+        max-width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ticker-track {
+        animation: none;
     }
 }

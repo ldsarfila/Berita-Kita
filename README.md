@@ -2,6 +2,13 @@
 
 BeritaKita adalah portal berita terpercaya Indonesia yang menyajikan informasi terkini seputar nasional, ekonomi, teknologi, olahraga, hiburan, dan gaya hidup.
 
+## ✅ Status Implementasi
+
+- Homepage berita dan admin panel sudah terintegrasi dengan backend API.
+- Backend `api/v1` (auth, artikel, komentar) + PostgreSQL sudah siap dipakai.
+- Moderasi komentar admin sudah berjalan (approve/reject/pending/delete).
+- UX admin sudah konsisten dengan toast notification dan modal konfirmasi custom.
+
 ## 🎨 Fitur Desain
 
 - **Clean Layout** - Desain modern dengan warna dominan biru dan putih
@@ -20,7 +27,8 @@ Berita-Kita/
 ├── admin/                  # Admin panel
 │   ├── login.html         # Halaman login admin
 │   ├── dashboard.html     # Dashboard admin
-│   └── articles.html      # Manajemen artikel
+│   ├── articles.html      # Manajemen artikel
+│   └── comments.html      # Moderasi komentar
 ├── public/                # Assets publik
 │   ├── css/
 │   │   ├── style.css      # Stylesheet homepage
@@ -29,7 +37,8 @@ Berita-Kita/
 │   │   ├── main.js        # JavaScript homepage
 │   │   ├── admin.js       # JavaScript admin panel
 │   │   ├── admin-login.js # Login functionality
-│   │   └── admin-articles.js # Article management
+│   │   ├── admin-articles.js # Article management
+│   │   └── admin-comments.js # Comment moderation
 │   └── images/            # Gambar dan media
 └── components/            # Komponen reusable (future)
 ```
@@ -67,10 +76,32 @@ Berita-Kita/
 
 3. Akses website di `http://localhost:8000`
 
+### Menjalankan Backend API (Phase 1)
+
+1. Masuk folder backend dan install dependency:
+   ```bash
+   cd backend
+   npm install
+   cp .env.example .env
+   ```
+
+2. Jalankan PostgreSQL, lalu inisialisasi database:
+   ```bash
+   psql postgresql://postgres:postgres@localhost:5432/berita_kita -f db/schema.sql
+   psql postgresql://postgres:postgres@localhost:5432/berita_kita -f db/seed.sql
+   ```
+
+3. Start API server:
+   ```bash
+   npm run dev
+   ```
+
+4. API tersedia di `http://localhost:3000/api/v1`
+
 ### Mengakses Admin Panel
 
 1. Buka `http://localhost:8000/admin/login.html`
-2. Login dengan kredensial admin (demo - any username/password)
+2. Login dengan kredensial seed backend: `admin` / `admin123`
 3. Kelola artikel, kategori, dan konten dari dashboard
 
 ## 📱 Responsive Breakpoints
@@ -109,7 +140,7 @@ Berita-Kita/
 #### Article Management (`admin/articles.html`)
 - Form tambah/edit artikel lengkap
 - Image upload dengan preview
-- Rich text editor
+- Rich text editor (TinyMCE)
 - Article listing dengan filter
 - Search functionality
 - Bulk actions
@@ -124,14 +155,20 @@ Berita-Kita/
 - Back to top button
 - Lazy loading images
 - Sticky header dengan hide/show on scroll
+- Social media sharing (Facebook, X, WhatsApp, copy link)
+- Comment system terintegrasi API
+- Analytics integration (GA4 ready)
 
 ### Admin Panel
 - Sidebar responsive toggle
 - Form validation
-- Image upload preview
+- Image upload preview + optimasi otomatis (resize + WebP)
 - Table filtering dan searching
 - Pagination
 - CRUD operations untuk artikel
+- Moderasi komentar (approve/reject/pending/delete)
+- Toast notification konsisten di seluruh halaman admin
+- Modal konfirmasi custom untuk aksi penting (logout/hapus)
 - Statistics animation
 
 ## 🖼️ Placeholder Images
@@ -156,6 +193,7 @@ Ukuran rekomendasi:
 - **Komentar**: Moderasi komentar pembaca
 - **Media**: Upload dan manajemen gambar
 - **Settings**: Konfigurasi website
+- **UX Konsisten**: Toast & modal konfirmasi custom tanpa popup browser bawaan
 
 ## 🌐 Browser Support
 
@@ -186,16 +224,47 @@ Semua layout menggunakan CSS Grid dan Flexbox untuk kemudahan customisasi.
 
 ## 🚀 Pengembangan Selanjutnya
 
-- [ ] Integrasi backend (Node.js/PHP/Python)
-- [ ] Database untuk penyimpanan artikel
-- [ ] User authentication yang sesungguhnya
-- [ ] API untuk mobile app
-- [ ] Rich text editor (TinyMCE/CKEditor)
-- [ ] Image optimization
-- [ ] SEO optimization
-- [ ] Analytics integration
-- [ ] Comment system
-- [ ] Social media sharing
+- [x] Integrasi backend (Node.js/PHP/Python)
+- [x] Database untuk penyimpanan artikel
+- [x] User authentication yang sesungguhnya
+- [x] API untuk mobile app
+- [x] Rich text editor (TinyMCE/CKEditor)
+- [x] Image optimization
+- [x] SEO optimization
+- [x] Analytics integration
+- [x] Comment system
+- [x] Social media sharing
+
+### Konfigurasi Analytics (GA4)
+
+Di `index.html`, set nilai:
+
+```html
+window.BERITAKITA_GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+```
+
+Jika kosong, script analytics tidak akan dijalankan (aman untuk mode development).
+
+## 🧱 Catatan Teknis
+
+### Arsitektur Singkat
+- Frontend: HTML5, CSS3, JavaScript ES6+ (vanilla)
+- Admin UI: halaman terpisah dengan komponen shared (`admin.js`, `admin.css`)
+- Backend: Node.js + Express + PostgreSQL + JWT (`backend/`)
+- API utama: prefix `api/v1` untuk auth, artikel, komentar, dan moderasi
+
+### Keamanan Dasar yang Sudah Dipakai
+- Validasi input dan sanitasi komentar
+- JWT untuk endpoint admin/protected
+- Rate limiting API + anti-spam komentar
+- Escape HTML pada rendering konten user-generated
+
+### Checklist Deploy Singkat
+- Set nilai `.env` production (`JWT_SECRET`, `DATABASE_URL`, CORS origin)
+- Aktifkan HTTPS pada domain produksi
+- Jalankan migrasi schema + seed sesuai kebutuhan environment
+- Konfigurasi logging/monitoring dan backup database berkala
+- Verifikasi `robots.txt`, `sitemap.xml`, dan metadata SEO
 
 ## 📄 License
 
