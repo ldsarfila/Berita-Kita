@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin BeritaKita</title>
+    <link rel="stylesheet" href="../public/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2>Berita<span>Kita</span></h2>
+                <p>Admin Panel</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="articles.html" class="nav-item">
+                    <i class="fas fa-newspaper"></i> Artikel
+                </a>
+                <a href="categories.html" class="nav-item">
+                    <i class="fas fa-tags"></i> Kategori
+                </a>
+                <a href="users.html" class="nav-item">
+                    <i class="fas fa-users"></i> Pengguna
+                </a>
+                <a href="comments.html" class="nav-item">
+                    <i class="fas fa-comments"></i> Komentar
+                </a>
+                <a href="media.html" class="nav-item">
+                    <i class="fas fa-images"></i> Media
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i> Pengaturan
+                </a>
+                <a href="login.html" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <!-- Top Bar -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="search-box">
+                        <input type="text" placeholder="Cari...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="notification">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">5</span>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://via.placeholder.com/40" alt="Admin">
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="admin-content">
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Artikel</h3>
+                            <p class="stat-number">1,245</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 12% dari bulan lalu
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Views</h3>
+                            <p class="stat-number">245,890</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 8% dari bulan lalu
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Pengguna</h3>
+                            <p class="stat-number">8,456</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 5% dari bulan lalu
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon red">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Komentar</h3>
+                            <p class="stat-number">3,892</p>
+                            <span class="stat-change negative">
+                                <i class="fas fa-arrow-down"></i> 2% dari bulan lalu
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and Tables -->
+                <div class="dashboard-grid">
+                    <!-- Recent Articles -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h2>Artikel Terbaru</h2>
+                            <a href="articles.html" class="btn-link">Lihat Semua</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Judul</th>
+                                        <th>Kategori</th>
+                                        <th>Penulis</th>
+                                        <th>Tanggal</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Pemerintah Luncurkan Program Baru</td>
+                                        <td><span class="badge-cat blue">Nasional</span></td>
+                                        <td>Admin Berita</td>
+                                        <td>17 Feb 2026</td>
+                                        <td><span class="status published">Published</span></td>
+                                        <td>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bursa Saham Indonesia Menguat</td>
+                                        <td><span class="badge-cat green">Ekonomi</span></td>
+                                        <td>Editor Ekonomi</td>
+                                        <td>17 Feb 2026</td>
+                                        <td><span class="status published">Published</span></td>
+                                        <td>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Startup Indonesia Raih Pendanaan</td>
+                                        <td><span class="badge-cat purple">Teknologi</span></td>
+                                        <td>Editor Tech</td>
+                                        <td>16 Feb 2026</td>
+                                        <td><span class="status draft">Draft</span></td>
+                                        <td>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Timnas Indonesia Lolos ke Final</td>
+                                        <td><span class="badge-cat orange">Olahraga</span></td>
+                                        <td>Editor Olahraga</td>
+                                        <td>16 Feb 2026</td>
+                                        <td><span class="status published">Published</span></td>
+                                        <td>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Film Indonesia Raih Penghargaan</td>
+                                        <td><span class="badge-cat red">Hiburan</span></td>
+                                        <td>Editor Hiburan</td>
+                                        <td>15 Feb 2026</td>
+                                        <td><span class="status published">Published</span></td>
+                                        <td>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="dashboard-card quick-actions">
+                        <div class="card-header">
+                            <h2>Quick Actions</h2>
+                        </div>
+                        <div class="quick-action-grid">
+                            <a href="articles.html?action=new" class="quick-action-btn">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Artikel Baru</span>
+                            </a>
+                            <a href="categories.html?action=new" class="quick-action-btn">
+                                <i class="fas fa-folder-plus"></i>
+                                <span>Kategori Baru</span>
+                            </a>
+                            <a href="users.html?action=new" class="quick-action-btn">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Pengguna Baru</span>
+                            </a>
+                            <a href="media.html?action=upload" class="quick-action-btn">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Upload Media</span>
+                            </a>
+                        </div>
+
+                        <!-- Popular Categories -->
+                        <div class="popular-categories">
+                            <h3>Kategori Populer</h3>
+                            <div class="category-list">
+                                <div class="category-item">
+                                    <span class="cat-name">Nasional</span>
+                                    <span class="cat-count">234 artikel</span>
+                                </div>
+                                <div class="category-item">
+                                    <span class="cat-name">Ekonomi</span>
+                                    <span class="cat-count">189 artikel</span>
+                                </div>
+                                <div class="category-item">
+                                    <span class="cat-name">Teknologi</span>
+                                    <span class="cat-count">156 artikel</span>
+                                </div>
+                                <div class="category-item">
+                                    <span class="cat-name">Olahraga</span>
+                                    <span class="cat-count">145 artikel</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Log -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2>Aktivitas Terbaru</h2>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon blue">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p><strong>Admin Berita</strong> menambahkan artikel baru</p>
+                                <span class="activity-time">2 jam yang lalu</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon green">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p><strong>Editor Ekonomi</strong> mengubah artikel "Bursa Saham"</p>
+                                <span class="activity-time">3 jam yang lalu</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon orange">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Komentar baru pada artikel "Startup Indonesia"</p>
+                                <span class="activity-time">5 jam yang lalu</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon red">
+                                <i class="fas fa-trash"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p><strong>Admin</strong> menghapus artikel spam</p>
+                                <span class="activity-time">6 jam yang lalu</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/js/admin.js"></script>
+</body>
+</html>

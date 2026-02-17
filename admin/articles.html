@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Artikel - Admin BeritaKita</title>
+    <link rel="stylesheet" href="../public/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2>Berita<span>Kita</span></h2>
+                <p>Admin Panel</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="articles.html" class="nav-item active">
+                    <i class="fas fa-newspaper"></i> Artikel
+                </a>
+                <a href="categories.html" class="nav-item">
+                    <i class="fas fa-tags"></i> Kategori
+                </a>
+                <a href="users.html" class="nav-item">
+                    <i class="fas fa-users"></i> Pengguna
+                </a>
+                <a href="comments.html" class="nav-item">
+                    <i class="fas fa-comments"></i> Komentar
+                </a>
+                <a href="media.html" class="nav-item">
+                    <i class="fas fa-images"></i> Media
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i> Pengaturan
+                </a>
+                <a href="login.html" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <!-- Top Bar -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1>Kelola Artikel</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="search-box">
+                        <input type="text" placeholder="Cari...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="notification">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">5</span>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://via.placeholder.com/40" alt="Admin">
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="admin-content">
+                <!-- Article Form -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2>Tambah/Edit Artikel</h2>
+                        <button class="btn-primary" onclick="showList()">
+                            <i class="fas fa-list"></i> Lihat Daftar
+                        </button>
+                    </div>
+                    <form class="article-form" id="articleForm">
+                        <div class="form-row">
+                            <div class="form-group full">
+                                <label for="title">Judul Artikel *</label>
+                                <input type="text" id="title" name="title" required placeholder="Masukkan judul artikel">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="category">Kategori *</label>
+                                <select id="category" name="category" required>
+                                    <option value="">Pilih Kategori</option>
+                                    <option value="nasional">Nasional</option>
+                                    <option value="ekonomi">Ekonomi</option>
+                                    <option value="teknologi">Teknologi</option>
+                                    <option value="olahraga">Olahraga</option>
+                                    <option value="hiburan">Hiburan</option>
+                                    <option value="gaya-hidup">Gaya Hidup</option>
+                                    <option value="otomotif">Otomotif</option>
+                                    <option value="internasional">Internasional</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="author">Penulis *</label>
+                                <input type="text" id="author" name="author" required placeholder="Nama penulis">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="publish-date">Tanggal Publikasi</label>
+                                <input type="datetime-local" id="publish-date" name="publish-date">
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select id="status" name="status">
+                                    <option value="draft">Draft</option>
+                                    <option value="published">Published</option>
+                                    <option value="scheduled">Scheduled</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="featured-image">Gambar Utama</label>
+                            <div class="image-upload">
+                                <input type="file" id="featured-image" name="featured-image" accept="image/*">
+                                <label for="featured-image" class="upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Klik untuk upload gambar</span>
+                                </label>
+                                <div id="image-preview" class="image-preview"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="excerpt">Excerpt (Ringkasan)</label>
+                            <textarea id="excerpt" name="excerpt" rows="3" placeholder="Ringkasan singkat artikel (max 200 karakter)"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="content">Konten Artikel *</label>
+                            <textarea id="content" name="content" rows="15" required placeholder="Tulis konten artikel di sini..."></textarea>
+                            <div class="editor-toolbar">
+                                <button type="button" class="toolbar-btn" title="Bold"><i class="fas fa-bold"></i></button>
+                                <button type="button" class="toolbar-btn" title="Italic"><i class="fas fa-italic"></i></button>
+                                <button type="button" class="toolbar-btn" title="Underline"><i class="fas fa-underline"></i></button>
+                                <button type="button" class="toolbar-btn" title="Link"><i class="fas fa-link"></i></button>
+                                <button type="button" class="toolbar-btn" title="List"><i class="fas fa-list"></i></button>
+                                <button type="button" class="toolbar-btn" title="Quote"><i class="fas fa-quote-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tags">Tags (pisahkan dengan koma)</label>
+                            <input type="text" id="tags" name="tags" placeholder="Politik, Ekonomi, Nasional">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" name="featured"> Artikel Unggulan
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" name="allow-comments" checked> Izinkan Komentar
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-save"></i> Simpan Artikel
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="previewArticle()">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button type="reset" class="btn-danger">
+                                <i class="fas fa-times"></i> Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Article List -->
+                <div class="dashboard-card" id="articleList" style="display: none;">
+                    <div class="card-header">
+                        <h2>Daftar Artikel</h2>
+                        <button class="btn-primary" onclick="showForm()">
+                            <i class="fas fa-plus"></i> Tambah Baru
+                        </button>
+                    </div>
+                    
+                    <div class="table-filters">
+                        <div class="filter-group">
+                            <label>Filter Kategori:</label>
+                            <select id="filter-category">
+                                <option value="">Semua Kategori</option>
+                                <option value="nasional">Nasional</option>
+                                <option value="ekonomi">Ekonomi</option>
+                                <option value="teknologi">Teknologi</option>
+                                <option value="olahraga">Olahraga</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Filter Status:</label>
+                            <select id="filter-status">
+                                <option value="">Semua Status</option>
+                                <option value="published">Published</option>
+                                <option value="draft">Draft</option>
+                                <option value="scheduled">Scheduled</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <input type="text" id="search-articles" placeholder="Cari artikel...">
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="select-all"></th>
+                                    <th>Judul</th>
+                                    <th>Kategori</th>
+                                    <th>Penulis</th>
+                                    <th>Tanggal</th>
+                                    <th>Views</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox" class="row-select"></td>
+                                    <td>
+                                        <div class="article-title-cell">
+                                            <img src="https://via.placeholder.com/60x40" alt="Thumbnail">
+                                            <span>Pemerintah Luncurkan Program Baru untuk Kesejahteraan</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge-cat blue">Nasional</span></td>
+                                    <td>Admin Berita</td>
+                                    <td>17 Feb 2026</td>
+                                    <td>1,234</td>
+                                    <td><span class="status published">Published</span></td>
+                                    <td class="action-buttons">
+                                        <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="row-select"></td>
+                                    <td>
+                                        <div class="article-title-cell">
+                                            <img src="https://via.placeholder.com/60x40" alt="Thumbnail">
+                                            <span>Bursa Saham Indonesia Menguat di Penutupan</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge-cat green">Ekonomi</span></td>
+                                    <td>Editor Ekonomi</td>
+                                    <td>17 Feb 2026</td>
+                                    <td>890</td>
+                                    <td><span class="status published">Published</span></td>
+                                    <td class="action-buttons">
+                                        <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="row-select"></td>
+                                    <td>
+                                        <div class="article-title-cell">
+                                            <img src="https://via.placeholder.com/60x40" alt="Thumbnail">
+                                            <span>Startup Indonesia Raih Pendanaan $50 Juta</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge-cat purple">Teknologi</span></td>
+                                    <td>Editor Tech</td>
+                                    <td>16 Feb 2026</td>
+                                    <td>2,100</td>
+                                    <td><span class="status draft">Draft</span></td>
+                                    <td class="action-buttons">
+                                        <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">4</button>
+                        <button class="page-btn">5</button>
+                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/js/admin.js"></script>
+    <script src="../public/js/admin-articles.js"></script>
+</body>
+</html>
