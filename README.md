@@ -277,9 +277,9 @@ MIT License - bebas digunakan untuk proyek pribadi maupun komersial.
 
 ## 📞 Kontak
 
-- Website: [beritakita.com](https://beritakita.com)
-- Email: info@beritakita.com
-- Twitter: [@BeritaKita](https://twitter.com/BeritaKita)
+- Website: [jwebsiteku.com](https://jwebsiteku.com)
+- Email: info@jwebsiteku.com
+- Twitter: [@jwebsiteku](https://twitter.com/jwebsiteku)
 
 ---
 
